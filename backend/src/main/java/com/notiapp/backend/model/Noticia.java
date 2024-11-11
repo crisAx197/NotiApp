@@ -78,4 +78,12 @@ public class Noticia {
     public void setUltFechaEdicion(LocalDateTime ultFechaEdicion) {
         this.ultFechaEdicion = ultFechaEdicion;
     }
+
+    public List<CategoriaNoticia> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<CategoriaNoticia> categorias) {
+        this.categorias = categorias;
+    }
 }
