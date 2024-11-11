@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/news")
@@ -60,5 +62,25 @@ public class NoticiasController {
     public Noticia getNoticiaById(@PathVariable Long id) {
         return noticiaRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Noticia not found with id " + id));
+    }
+    
+    @GetMapping("/filter")
+    public List<NoticiaDTO> getFilteredNews(
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) LocalDateTime startDate,
+            @RequestParam(required = false) LocalDateTime endDate) {
+
+        List<Noticia> filteredNoticias = noticiaRepository.findByCategoryAndDateRange(categoria, startDate, endDate);
+
+        return filteredNoticias.stream().map(noticia ->
+            new NoticiaDTO(
+                noticia.getIdNoticia(),
+                noticia.getTitulo(),
+                noticia.getDescripcion(),
+                noticia.getCategorias().stream().map(c -> c.getCategoria()).collect(Collectors.toList()),
+                noticia.getFechaPublicacion(),
+                noticia.getImagen()
+            )
+        ).collect(Collectors.toList());
     }
 }
