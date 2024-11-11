@@ -1,5 +1,6 @@
 package com.notiapp.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,8 @@ public class Noticia {
     private LocalDateTime fechaPublicacion;
     private LocalDateTime ultFechaEdicion;
 
-    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CategoriaNoticia> categorias;
 
     // Getters y Setters

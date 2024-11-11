@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,5 +54,11 @@ public class NoticiasController {
                 noticia.getImagen()
             )
         ).collect(Collectors.toList());
+    }
+    
+    @GetMapping("/{id}")
+    public Noticia getNoticiaById(@PathVariable Long id) {
+        return noticiaRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Noticia not found with id " + id));
     }
 }
