@@ -19,10 +19,28 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Activa CORS globalmente
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/usuarios/activate","/usuarios/login","/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}"))
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+            .csrf(csrf -> csrf.ignoringRequestMatchers(
+                    "/usuarios/activate",
+                    "/usuarios/login",
+                    "/usuarios/register",
+                    "/usuarios/recover-password",
+                    "/usuarios/reset-password",
+                    "/news/lastNews",
+                    "/news/filter",
+                    "/news/{id}"
+            ))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/usuarios/activate","/usuarios/login","/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}").permitAll()
+                .requestMatchers(
+                    "/usuarios/activate",
+                    "/usuarios/login",
+                    "/usuarios/register",
+                    "/usuarios/recover-password",
+                    "/usuarios/reset-password",
+                    "/news/lastNews",
+                    "/news/filter",
+                    "/news/{id}"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -33,13 +51,13 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Permitir todos los orígenes
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica esta configuración a todas las rutas
+        source.registerCorsConfiguration("/**", configuration); 
         return source;
     }
 }

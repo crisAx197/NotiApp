@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +34,7 @@ public class UsuariosController {
         this.mailSender = mailSender;
     }
 
+    // Registro de Usuario
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registrarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         Map<String, Object> response = new HashMap<>();
@@ -48,9 +48,7 @@ public class UsuariosController {
             usuario.setCuentaActiva(false); 
 
             Usuario savedUsuario = usuarioRepository.save(usuario);
-
             String activationToken = savedUsuario.getIdUsuario().toString();
-
             enviarCorreoActivacion(savedUsuario.getCorreo(), activationToken);
 
             response.put("status", HttpStatus.CREATED.value());
@@ -65,13 +63,12 @@ public class UsuariosController {
         } catch (Exception e) {
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", "Ocurrió un error inesperado durante el registro. Por favor, intenta nuevamente en unos minutos.");
-            response.put("error", e.getClass().getName() + ": " + e.getMessage()); // Clase y mensaje de la excepción
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            response.put("error", e.getClass().getName() + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
-
-    }
-
+    // Enviar correo de activación
     private void enviarCorreoActivacion(String correo, String token) throws MessagingException {
         String linkActivacion = "http://localhost:8080/usuarios/activate?token=" + token;
         String subject = "Activa tu cuenta";
@@ -82,28 +79,15 @@ public class UsuariosController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
 
-        // Configurar el remitente
-        String fromAddress = "noreply@tu-dominio.com"; // Reemplaza con tu dirección de remitente
+        String fromAddress = "noreply@tu-dominio.com";
         helper.setFrom(fromAddress); 
-
-        // Configurar destinatario, asunto y contenido
         helper.setTo(correo);
         helper.setSubject(subject);
-        helper.setText(content, true); // `true` indica que el contenido es HTML
-
-        // Enviar correo y manejar excepciones
-        try {
-            mailSender.send(message);
-            System.out.println("Correo de activación enviado a: " + correo);
-        } catch (Exception e) {
-            System.err.println("Error al enviar el correo de activación: " + e.getMessage());
-            e.printStackTrace(); // Muestra el stack trace en la consola para mayor detalle
-            throw e; // Re-lanza la excepción para que sea manejada por el llamador
-        }
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 
-
-
+    // Activar cuenta
     @GetMapping("/activate")
     public ResponseEntity<Map<String, Object>> activarCuenta(@RequestParam("token") String token) {
         Map<String, Object> response = new HashMap<>();
@@ -133,6 +117,7 @@ public class UsuariosController {
         }
     }
 
+    // Login
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Map<String, Object> response = new HashMap<>();
@@ -153,5 +138,73 @@ public class UsuariosController {
             response.put("message", "Correo o contraseña incorrectos");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+    }
+
+    // Recuperación de Contraseña
+    @PostMapping("/recover-password")
+    public ResponseEntity<Map<String, Object>> recuperarContrasenia(@RequestParam("correo") String correo) {
+        Map<String, Object> response = new HashMap<>();
+        Usuario usuario = usuarioRepository.findByCorreo(correo);
+
+        if (usuario != null) {
+            String resetToken = usuario.getIdUsuario().toString();
+            try {
+                enviarCorreoRecuperacion(correo, resetToken);
+                response.put("status", HttpStatus.OK.value());
+                response.put("message", "Correo de recuperación enviado. Revisa tu bandeja de entrada.");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (MessagingException e) {
+                response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+                response.put("message", "Error al enviar el correo de recuperación. Intenta nuevamente.");
+                response.put("error", e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+        } else {
+            response.put("status", HttpStatus.NOT_FOUND.value());
+            response.put("message", "El correo no está registrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    // Restablecimiento de Contraseña
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, Object>> restablecerContrasenia(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Long usuarioId = Long.parseLong(token);
+            Usuario usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Token inválido o usuario no encontrado"));
+
+            usuario.setPassword(passwordEncoder.encode(newPassword));
+            usuarioRepository.save(usuario);
+
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Contraseña restablecida exitosamente.");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        } catch (NumberFormatException e) {
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Token inválido.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    // Enviar correo de recuperación
+    private void enviarCorreoRecuperacion(String correo, String token) throws MessagingException {
+        String linkRecuperacion = "http://localhost:8080/usuarios/reset-password?token=" + token;
+        String subject = "Recupera tu contraseña";
+        String content = "<p>Hola,</p>" +
+                         "<p>Parece que solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace para continuar:</p>" +
+                         "<a href=\"" + linkRecuperacion + "\">Restablecer contraseña</a>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
+
+        helper.setFrom("noreply@tu-dominio.com");
+        helper.setTo(correo);
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 }
