@@ -1,0 +1,25 @@
+# URL de conexion
+spring.datasource.url=
+
+# Credenciales
+spring.datasource.username=
+spring.datasource.password=
+
+# Configuraci\u00f3n del driver JDBC
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+# Configuracion de serializacion
+spring.jackson.serialization.FAIL_ON_EMPTY_BEANS=false
+
+# Configuracion del correo
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.writetimeout=5000
