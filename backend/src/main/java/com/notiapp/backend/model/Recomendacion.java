@@ -19,4 +19,27 @@ public class Recomendacion {
     private Usuario usuario;
 
     // Getters y Setters
+    public Long getIdRecomendacion() {
+        return idRecomendacion;
+    }
+
+    public void setIdRecomendacion(Long idRecomendacion) {
+        this.idRecomendacion = idRecomendacion;
+    }
+
+    public CategoriaNoticia getCategoriaNoticia() {
+        return categoriaNoticia;
+    }
+
+    public void setCategoriaNoticia(CategoriaNoticia categoriaNoticia) {
+        this.categoriaNoticia = categoriaNoticia;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
