@@ -3,6 +3,7 @@ package com.notiapp.backend.controller;
 import com.notiapp.backend.dto.UsuarioDTO;
 import com.notiapp.backend.model.Usuario;
 import com.notiapp.backend.repository.UsuarioRepository;
+import com.notiapp.backend.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,12 +27,14 @@ public class UsuariosController {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final JwtUtil jwtUtil; 
 
     @Autowired
-    public UsuariosController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
+    public UsuariosController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender, JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
+        this.jwtUtil = jwtUtil;
     }
 
     // Registro de Usuario
@@ -79,7 +82,7 @@ public class UsuariosController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
 
-        String fromAddress = "noreply@tu-dominio.com";
+        String fromAddress = "noreply@dominio.com";
         helper.setFrom(fromAddress); 
         helper.setTo(correo);
         helper.setSubject(subject);
@@ -117,26 +120,40 @@ public class UsuariosController {
         }
     }
 
-    // Login
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Map<String, Object> response = new HashMap<>();
-        Usuario usuario = usuarioRepository.findByCorreo(usuarioDTO.getCorreo());
 
-        if (usuario != null && passwordEncoder.matches(usuarioDTO.getPassword(), usuario.getPassword())) {
-            if (!usuario.getCuentaActiva()) {
+        try {
+            Usuario usuario = usuarioRepository.findByCorreo(usuarioDTO.getCorreo());
+
+            if (usuario != null && passwordEncoder.matches(usuarioDTO.getPassword(), usuario.getPassword())) {
+                
+                String token = jwtUtil.generateToken(usuario.getCorreo());
+                response.put("status", HttpStatus.OK.value());
+                response.put("message", "Login exitoso");
+                response.put("token", token);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
                 response.put("status", HttpStatus.UNAUTHORIZED.value());
-                response.put("message", "La cuenta aún no está activada. Revisa tu correo.");
+                response.put("message", "Correo o contraseña incorrectos");
+
+                // Añadiendo mensajes de depuración
+                if (usuario == null) {
+                    response.put("debug", "No se encontró un usuario con el correo proporcionado.");
+                } else if (!passwordEncoder.matches(usuarioDTO.getPassword(), usuario.getPassword())) {
+                    response.put("debug", "La contraseña proporcionada no coincide.");
+                }
+
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
-            response.put("status", HttpStatus.OK.value());
-            response.put("message", "Login exitoso");
-            response.put("usuario", usuario);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } else {
-            response.put("status", HttpStatus.UNAUTHORIZED.value());
-            response.put("message", "Correo o contraseña incorrectos");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+        } catch (Exception e) {
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Ocurrió un error durante el proceso de login. Intente nuevamente.");
+            response.put("error", e.getClass().getName());  // Clase del error
+            response.put("errorMessage", e.getMessage());   // Mensaje detallado del error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
@@ -201,7 +218,7 @@ public class UsuariosController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
 
-        helper.setFrom("noreply@tu-dominio.com");
+        helper.setFrom("noreply@dominio.com");
         helper.setTo(correo);
         helper.setSubject(subject);
         helper.setText(content, true);
