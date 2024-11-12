@@ -16,7 +16,7 @@ public class Usuario {
     private String correo;
     private String password;
     private Integer edad;
-    private Boolean cuentaActiva = true;
+    private Boolean cuentaActiva = false;
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

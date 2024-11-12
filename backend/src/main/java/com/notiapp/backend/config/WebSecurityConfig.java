@@ -20,9 +20,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Activa CORS globalmente
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/usuarios/activate","/usuarios/login","/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}"))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}").permitAll()
+                .requestMatchers("/usuarios/activate","/usuarios/login","/usuarios/register", "/news/lastNews", "/news/filter", "/news/{id}").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
