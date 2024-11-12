@@ -1,5 +1,6 @@
 package com.notiapp.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +14,8 @@ public class CategoriaNoticia {
     private String categoria;
 
     @ManyToOne
-    @JoinColumn(name = "id_noticia", nullable = false)
+    @JoinColumn(name = "id_noticia")
+    @JsonBackReference
     private Noticia noticia;
 
     // Getters y Setters

@@ -1,6 +1,6 @@
 package com.notiapp.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Noticia {
     private LocalDateTime ultFechaEdicion;
 
     @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference
     private List<CategoriaNoticia> categorias;
 
     // Getters y Setters
