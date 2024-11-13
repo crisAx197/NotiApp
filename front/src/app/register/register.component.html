@@ -9,5 +9,7 @@
     <button type="submit">Registrar</button>
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   </form>
+  <p> o </p>
+  <button class="google-button" (click)="register_google()">Ingresar con Google</button>
   <p class="redirect-login">¿Ya tienes una cuenta? <a (click)="goToLogin()">Inicia sesión</a></p>
 </div>
