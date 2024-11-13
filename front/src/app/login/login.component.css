@@ -21,7 +21,6 @@ body, html {
   }
 }
 
-/* Contenedor del formulario */
 .login-container {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -33,14 +32,13 @@ body, html {
   color: #ffffff;
 }
 
-/* Título */
+
 .login-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 500;
 }
 
-/* Campos de entrada */
 .login-container input[type="email"],
 .login-container input[type="password"] {
   width: 100%;
@@ -109,7 +107,7 @@ body, html {
   padding: 12px;
   border-radius: 8px;
   border: none;
-  background: #db4437; /* Color de Google */
+  background: #db4437;
   color: #ffffff;
   font-size: 16px;
   font-weight: bold;

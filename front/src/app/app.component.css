@@ -1,4 +1,4 @@
-/* Fondo animado con cambio de color */
+
 body, html {
   height: 100%;
   display: flex;
@@ -21,7 +21,6 @@ body, html {
   }
 }
 
-/* Contenedor del formulario */
 .login-container {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -33,14 +32,12 @@ body, html {
   color: #ffffff;
 }
 
-/* Título */
 .login-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 500;
 }
 
-/* Campos de entrada */
 .login-container input[type="email"],
 .login-container input[type="password"] {
   width: 100%;
@@ -60,7 +57,6 @@ body, html {
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
 }
 
-/* Botón de login */
 .login-container button {
   width: 100%;
   padding: 12px;
@@ -80,7 +76,6 @@ body, html {
   box-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
 }
 
-/* Mensaje de error */
 .error-message {
   color: #ff4d4d;
   margin-top: 10px;

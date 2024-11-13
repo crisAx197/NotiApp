@@ -1,4 +1,4 @@
-/* Body overflow settings for better scrolling */
+
 body, html {
   height: 100%;
   background: linear-gradient(135deg, #000047, #1c0047);
@@ -83,7 +83,6 @@ body, html {
   margin-bottom: 10px;
 }
 
-/* Detail view styling */
 .noticia-detail {
   position: fixed;
   top: 0;
@@ -101,7 +100,6 @@ body, html {
   text-align: center;
 }
 
-/* Recommendations section styling */
 .recommendations {
   margin-top: 20px;
 }
@@ -220,4 +218,18 @@ h2 {
   display: flex;
   gap: 15px;
   justify-content: center;
+}
+
+.detail-image {
+  max-width: 100%;
+  margin: 20px auto;
+
+}
+
+.detail-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
+import {AuthGoogleService} from '../auth-google.service';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent {
   confirmPassword: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private authGoogleService: AuthGoogleService) {}
 
   validatePassword(password: string): boolean {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
@@ -29,6 +30,10 @@ export class RegisterComponent {
   goToLogin() {
     this.router.navigate(['/login']);
   }
+
+  register_google(){
+    this.authGoogleService.login();
+  };
 
   register() {
     if (this.password !== this.confirmPassword) {
@@ -48,6 +53,7 @@ export class RegisterComponent {
       edad: this.edad,
       password: this.password,
     };
+
 
     this.authService.register(userData).subscribe({
       next: () => {
