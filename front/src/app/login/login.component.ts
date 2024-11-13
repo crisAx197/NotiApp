@@ -3,6 +3,8 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthGoogleService } from '../auth-google.service';
+
 
 @Component({
   selector: 'app-login',
@@ -16,10 +18,18 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private authGoogleService: AuthGoogleService) {}
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  goToForgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
+
+  login_google(){
+    this.authGoogleService.login();
   }
 
   login() {

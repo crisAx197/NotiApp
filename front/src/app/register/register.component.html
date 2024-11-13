@@ -9,4 +9,5 @@
     <button type="submit">Registrar</button>
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   </form>
+  <p class="redirect-login">¿Ya tienes una cuenta? <a (click)="goToLogin()">Inicia sesión</a></p>
 </div>
