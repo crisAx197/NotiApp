@@ -1,0 +1,88 @@
+/* Fondo animado con cambio de color */
+body, html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, #000047, #1c0047);
+  animation: backgroundGradient 10s ease infinite;
+  font-family: Arial, sans-serif;
+}
+
+@keyframes backgroundGradient {
+  0% {
+    background: #000047;
+  }
+  50% {
+    background: #1c0047;
+  }
+  100% {
+    background: #000047;
+  }
+}
+
+/* Contenedor del formulario */
+.login-container {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 40px;
+  width: 300px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Título */
+.login-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Campos de entrada */
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.login-container input[type="email"]:focus,
+.login-container input[type="password"]:focus {
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
+}
+
+/* Botón de login */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #00aaff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+}
+
+.login-container button:hover {
+  background: #0088cc;
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
+}
+
+/* Mensaje de error */
+.error-message {
+  color: #ff4d4d;
+  margin-top: 10px;
+  font-size: 14px;
+}
