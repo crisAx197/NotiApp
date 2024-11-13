@@ -1,26 +1,84 @@
-<div class="news-container" *ngIf="!selectedNoticia">
-  <h2>Últimas Noticias</h2>
-  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-  <ul>
-    <li *ngFor="let noticia of noticias" (click)="selectNoticia(noticia)">
-      <h3>{{ noticia.titulo }}</h3>
-      <p>{{ noticia.descripcion }}</p>
-      <small>{{ noticia.fechaPublicacion | date:'short' }}</small>
-    </li>
-  </ul>
-</div>
+<div class="home-container">
+  <!-- Barra de Navegación -->
+  <nav class="navbar">
+    <a (click)="view = 'latest'" [class.active]="view === 'latest'">Últimas Noticias</a>
+    <a (click)="view = 'category'" [class.active]="view === 'category'">Filtrar por Categoría</a>
+  </nav>
 
-<div class="noticia-detail" *ngIf="selectedNoticia">
-  <button (click)="selectedNoticia = null">Volver a la lista de noticias</button>
-  <h2>{{ selectedNoticia.titulo }}</h2>
-  <p>{{ selectedNoticia.descripcion }}</p>
-  <small>Publicado el {{ selectedNoticia.fechaPublicacion | date:'short' }}</small>
-  <div *ngIf="selectedNoticia.imagen">
-    <img [src]="selectedNoticia.imagen" alt="Imagen de la noticia">
+  <div *ngIf="view === 'latest'" class="latest-news-container">
+    <h2>Últimas Noticias</h2>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <div *ngFor="let date of fechas">
+      <h3>{{ date }}</h3>
+      <ul class="news-grid">
+        <li *ngFor="let noticia of noticiasPorFecha[date]" (click)="selectNoticia(noticia)" class="news-item">
+          <div class="news-preview">
+            <div *ngIf="noticia.imagen" class="news-image">
+              <img [src]="noticia.imagen" alt="Imagen de la noticia" />
+            </div>
+            <div class="news-info">
+              <h3>{{ noticia.titulo }}</h3>
+              <p>{{ noticia.descripcion }}</p>
+              <small>{{ noticia.fechaPublicacion | date:'short' }}</small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-  <ul>
-    <li *ngFor="let categoria of selectedNoticia.categorias">
-      {{ categoria }}
-    </li>
-  </ul>
+
+  <div *ngIf="view === 'category'" class="category-filter-container">
+    <h2>Filtrar por Categoría</h2>
+    <div class="category-list">
+      <button *ngFor="let category of categories" (click)="filterByCategory(category)">
+        {{ category }}
+      </button>
+    </div>
+    <div class="filtered-news-container" *ngIf="filteredNoticias.length">
+      <ul class="news-grid">
+        <li *ngFor="let noticia of filteredNoticias" (click)="selectNoticia(noticia)" class="news-item">
+          <div class="news-preview">
+            <div *ngIf="noticia.imagen" class="news-image">
+              <img [src]="noticia.imagen" alt="Imagen de la noticia" />
+            </div>
+            <div class="news-info">
+              <h3>{{ noticia.titulo }}</h3>
+              <p>{{ noticia.descripcion }}</p>
+              <small>{{ noticia.fechaPublicacion | date:'short' }}</small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <p *ngIf="!filteredNoticias.length && filterApplied" class="error-message">No se encontraron noticias para esta categoría.</p>
+  </div>
+
+  <div class="noticia-detail" *ngIf="selectedNoticia">
+    <button class="back-button" (click)="selectedNoticia = null">Volver a la lista de noticias</button>
+    <h2>{{ selectedNoticia.titulo }}</h2>
+    <p>{{ selectedNoticia.descripcion }}</p>
+    <p>{{ selectedNoticia.cuerpo }}</p>
+    <small>Publicado el {{ selectedNoticia.fechaPublicacion | date:'short' }}</small>
+
+    <div *ngIf="selectedNoticia.imagen" class="detail-image">
+      <img [src]="selectedNoticia.imagen" alt="Imagen de la noticia" />
+    </div>
+
+    <div class="recommendations">
+      <h3>Te podría interesar</h3>
+      <div class="recommendation-grid">
+        <div *ngFor="let recomendacion of recomendaciones" (click)="selectNoticia(recomendacion)" class="recommendation-item">
+          <div class="recommendation-preview">
+            <div *ngIf="recomendacion.imagen" class="recommendation-image">
+              <img [src]="recomendacion.imagen" alt="Imagen de la recomendación" />
+            </div>
+            <div class="recommendation-info">
+              <h4>{{ recomendacion.titulo }}</h4>
+              <p>{{ recomendacion.descripcion }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,17 @@
+.register-container .redirect-login {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.register-container .redirect-login a {
+  color: #00aaff;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.register-container .redirect-login a:hover {
+  color: #0088cc;
+  text-decoration: underline;
+}

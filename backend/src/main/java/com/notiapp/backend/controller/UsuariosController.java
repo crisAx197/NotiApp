@@ -209,10 +209,10 @@ public class UsuariosController {
 
     // Enviar correo de recuperación
     private void enviarCorreoRecuperacion(String correo, String token) throws MessagingException {
-        String linkRecuperacion = "http://localhost:8080/usuarios/reset-password?token=" + token;
+        String linkRecuperacion = "http://localhost:4200/reset-password";
         String subject = "Recupera tu contraseña";
         String content = "<p>Hola,</p>" +
-                         "<p>Parece que solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace para continuar:</p>" +
+                         "<p>Parece que solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace para continuar e ingresa el siguiente numero "+token+" :</p>" +
                          "<a href=\"" + linkRecuperacion + "\">Restablecer contraseña</a>";
 
         MimeMessage message = mailSender.createMimeMessage();

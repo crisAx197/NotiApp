@@ -3,6 +3,8 @@
   <input type="email" [(ngModel)]="email" placeholder="Correo">
   <input type="password" [(ngModel)]="password" placeholder="Contraseña">
   <button (click)="login()">Ingresar</button>
+  <button class="google-button" (click)="login_google()">Ingresar con Google</button>
   <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   <p>¿No tienes cuenta? <a (click)="goToRegister()">Regístrate aquí</a></p>
+  <p><a (click)="goToForgotPassword()">¿Has olvidado tu contraseña?</a></p>
 </div>

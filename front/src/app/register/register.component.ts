@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule para [(ngModel)]
-import { CommonModule } from '@angular/common'; // Importa CommonModule para *ngIf
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule], // Incluye FormsModule y CommonModule aquí
+  imports: [FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
@@ -24,6 +24,10 @@ export class RegisterComponent {
   validatePassword(password: string): boolean {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     return passwordRegex.test(password);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 
   register() {
