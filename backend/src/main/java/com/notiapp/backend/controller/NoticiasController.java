@@ -93,7 +93,7 @@ public class NoticiasController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is missing or invalid");
         }
 
-        String jwtToken = token.substring(7); // Elimina el prefijo "Bearer "
+        String jwtToken = token.substring(7); 
         String email = jwtUtil.extractEmail(jwtToken);
 
         if (!jwtUtil.isTokenValid(jwtToken, email)) {
