@@ -33,7 +33,6 @@ public class NoticiaDTO {
         this.imagen = imagen;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

@@ -31,9 +31,19 @@ export class NoticiaService {
 
   getFilteredNews(categoria?: string, startDate?: string, endDate?: string): Observable<any> {
     let url = `${this.apiUrl}/filter?`;
+
     if (categoria) url += `categoria=${categoria}&`;
-    if (startDate) url += `startDate=${startDate}&`;
-    if (endDate) url += `endDate=${endDate}&`;
+
+    if (startDate) {
+      const formattedStartDate = `${startDate}T00:00:00`;
+      url += `startDate=${formattedStartDate}&`;
+    }
+
+    if (endDate) {
+      const formattedEndDate = `${endDate}T23:59:59`;
+      url += `endDate=${formattedEndDate}&`;
+    }
+
     return this.http.get(url, { headers: this.getHeaders() });
   }
 }

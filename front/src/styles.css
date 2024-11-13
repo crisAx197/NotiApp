@@ -1,6 +1,5 @@
-/* Fondo animado con cambio de color */
+
 body, html {
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,37 +9,34 @@ body, html {
 }
 
 @keyframes backgroundGradient {
-  0% {
-    background: #000047;
-  }
-  50% {
-    background: #1c0047;
-  }
-  100% {
-    background: #000047;
-  }
+  0% { background: #000047; }
+  50% { background: #1c0047; }
+  100% { background: #000047; }
 }
 
-/* Contenedor del formulario */
-.login-container {
+.login-container, .register-container {
+  display: flex;
+  flex-direction: column;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 40px;
-  width: 300px;
+  width: 90%;
+  max-width: 400px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
   text-align: center;
   color: #ffffff;
+  transition: transform 0.3s ease;
 }
 
-.login-container h2 {
+.login-container h2, .register-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 500;
 }
 
-.login-container input[type="email"],
-.login-container input[type="password"] {
+.login-container input,
+.register-container input {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -53,12 +49,13 @@ body, html {
   transition: box-shadow 0.3s ease;
 }
 
-.login-container input[type="email"]:focus,
-.login-container input[type="password"]:focus {
+.login-container input:focus,
+.register-container input:focus {
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
 }
 
-.login-container button {
+.login-container button,
+.register-container button {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -72,7 +69,8 @@ body, html {
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
 }
 
-.login-container button:hover {
+.login-container button:hover,
+.register-container button:hover {
   background: #0088cc;
   box-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
 }
@@ -83,47 +81,127 @@ body, html {
   font-size: 14px;
 }
 
+@media (max-width: 768px) {
 
-.register-container {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 40px;
-  width: 300px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  color: #ffffff;
+  .login-container, .register-container {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .login-container h2, .register-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .login-container input, .register-container input,
+  .login-container button, .register-container button {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
-.register-container h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  font-weight: 500;
+@media (max-width: 480px) {
+  .login-container, .register-container {
+    padding: 15px;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .login-container h2, .register-container h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .login-container input, .register-container input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .login-container button, .register-container button {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
-.register-container input[type="text"],
-.register-container input[type="email"],
-.register-container input[type="number"],
-.register-container input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.news-container {
+  padding: 20px;
 }
 
-.register-container button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background: #00aaff;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: bold;
+.news-item {
   cursor: pointer;
+  list-style: none;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+}
+
+.news-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.news-preview {
+  display: flex;
+  gap: 15px;
+}
+
+.news-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.news-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-info h3 {
+  font-size: 20px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.news-info p {
+  font-size: 16px;
+  color: #cccccc;
+  margin: 5px 0;
+}
+
+.news-info small {
+  color: #bbbbbb;
+}
+
+.news-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.news-categories li {
+  background: #333366;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.noticia-detail {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #ffffff;
+}
+
+.noticia-detail img {
+  width: 70%;
+  max-width: 100px;
+  border-radius: 10px;
+  margin-top: 20px;
 }

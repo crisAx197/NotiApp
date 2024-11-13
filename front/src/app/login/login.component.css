@@ -1,4 +1,4 @@
-/* Fondo animado con cambio de color */
+
 body, html {
   height: 100%;
   display: flex;
@@ -60,7 +60,6 @@ body, html {
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
 }
 
-/* Botón de login */
 .login-container button {
   width: 100%;
   padding: 12px;
@@ -80,9 +79,50 @@ body, html {
   box-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
 }
 
-/* Mensaje de error */
 .error-message {
   color: #ff4d4d;
   margin-top: 10px;
   font-size: 14px;
+}
+
+.login-container a {
+  color: #00aaff;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-container a:hover {
+  color: #0088cc;
+  text-decoration: underline;
+}
+
+.login-container button {
+  margin-bottom: 10px;
+}
+
+.login-container .google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #db4437; /* Color de Google */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(219, 68, 55, 0.5);
+}
+
+.login-container .google-button:hover {
+  background: #c23321;
+  box-shadow: 0 0 20px rgba(219, 68, 55, 0.8);
+}
+
+.login-container p {
+  margin-top: 20px;
 }
