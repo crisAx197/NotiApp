@@ -22,12 +22,13 @@ public interface NoticiaRepository extends JpaRepository<Noticia, Long> {
     
     @Query("SELECT n FROM Noticia n JOIN n.categorias c " +
        "WHERE (:categoria IS NULL OR c.categoria = :categoria) " +
-       "AND (:startDate IS NULL OR n.fechaPublicacion >= :startDate) " +
-       "AND (:endDate IS NULL OR n.fechaPublicacion <= :endDate) " +
+       "AND (:startDate IS NULL OR CAST(n.fechaPublicacion AS date) >= CAST(:startDate AS date)) " +
+       "AND (:endDate IS NULL OR CAST(n.fechaPublicacion AS date) <= CAST(:endDate AS date)) " +
        "ORDER BY n.fechaPublicacion DESC")
-    List<Noticia> findByCategoryAndDateRange(
-            @Param("categoria") String categoria,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
+List<Noticia> findByCategoryAndDateRange(
+        @Param("categoria") String categoria,
+        @Param("startDate") LocalDateTime startDate,
+        @Param("endDate") LocalDateTime endDate);
+
 
 }

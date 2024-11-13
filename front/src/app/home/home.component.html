@@ -5,6 +5,7 @@
     <a (click)="view = 'category'" [class.active]="view === 'category'">Filtrar por Categoría</a>
   </nav>
 
+  <!-- Últimas Noticias -->
   <div *ngIf="view === 'latest'" class="latest-news-container">
     <h2>Últimas Noticias</h2>
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -27,6 +28,7 @@
     </div>
   </div>
 
+  <!-- Filtrar por Categoría -->
   <div *ngIf="view === 'category'" class="category-filter-container">
     <h2>Filtrar por Categoría</h2>
     <div class="category-list">
@@ -53,12 +55,14 @@
     <p *ngIf="!filteredNoticias.length && filterApplied" class="error-message">No se encontraron noticias para esta categoría.</p>
   </div>
 
+  <!-- Detalle de Noticia -->
   <div class="noticia-detail" *ngIf="selectedNoticia">
     <button class="back-button" (click)="selectedNoticia = null">Volver a la lista de noticias</button>
     <h2>{{ selectedNoticia.titulo }}</h2>
     <p>{{ selectedNoticia.descripcion }}</p>
     <p>{{ selectedNoticia.cuerpo }}</p>
     <small>Publicado el {{ selectedNoticia.fechaPublicacion | date:'short' }}</small>
+
 
     <div *ngIf="selectedNoticia.imagen" class="detail-image">
       <img [src]="selectedNoticia.imagen" alt="Imagen de la noticia" />
